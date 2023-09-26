@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, flash, redirect, url_for
 from turma import Turma
 import pymysql
 from database import db
@@ -19,12 +19,22 @@ migrate = Migrate(app, db)
 def index():
     return 'Conexão realizada com sucesso'
 
-@app.route('/add') 
+@app.route('/add', methods=['GET', 'POST']) 
 def add():
-    obj = Nota(0, 100)
-    db.session.add(obj)
-    db.session.commit()
-    return 'Dados inseridos com sucesso' 
+    if request.method == 'GET':
+        return render_template('nota_add.html')
+    else:
+        valor = request.form.get('valor')
+        obj = Nota(0, valor)
+        db.session.add(obj)
+        db.session.commit()
+        flash('Dados inseridos com sucesso')
+        return redirect(url_for('add'))
 
+@app.route('/get')
+def get():
+    notas = Nota.query.all()
+    return render_template('nota_get.html', notas=notas)
+    
 if __name__ == '__main__':
     app.run(debug=True)
