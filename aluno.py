@@ -5,8 +5,10 @@ class Aluno(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     nome = db.Column(db.String(100))
     matricula = db.Column(db.String(100))
+    senha = db.Column(db.String(100))
 
-    def __init__(self, id, nome, matricula):
+    def __init__(self, id, nome, matricula, senha):
         self.id = id
         self.nome = nome
         self.matricula = matricula
+        self.senha = senha

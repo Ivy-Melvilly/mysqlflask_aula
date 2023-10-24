@@ -1,18 +1,23 @@
 from flask import Flask, render_template, request, flash, redirect, url_for
 from turma import Turma
 import pymysql
-from database import db
+from database import db, lm
 from flask_migrate import Migrate
 from nota import Nota
 from turma import Turma
 from aluno import Aluno
+from controllers.aluno import bp_alunos
 
 app = Flask(__name__)
+app.register_blueprint(bp_alunos, url_prefix='/alunos')
+
 app.config['SECRET_KEY'] = 'hsdaey7q6eihmsn9816}]'
 conexao = 'mysql+pymysql://psi2023_alba:u0ZNtc8AMbiMIr[m@albalopes.tech/psi2023_alba'
 app.config['SQLALCHEMY_DATABASE_URI'] = conexao
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
+lm.init_app(app)
+
 migrate = Migrate(app, db)
 
 @app.route('/')
@@ -35,6 +40,6 @@ def add():
 def get():
     notas = Nota.query.all()
     return render_template('nota_get.html', notas=notas)
-    
+
 if __name__ == '__main__':
     app.run(debug=True)
