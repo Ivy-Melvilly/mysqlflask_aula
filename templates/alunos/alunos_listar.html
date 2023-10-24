@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{%block conteudo %}
+    <div class="container">
+        <h1 class="mt-5">Listar Alunos</h1>
+
+        <a href="{{url_for('alunos.cadastrar')}}" class="btn btn-info">Adicionar aluno</a>
+        <!-- Tabela para listar alunos existentes -->
+        <div class="mt-4">
+            <h2>Alunos</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Matrícula</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for aluno in alunos %}
+                        <tr>
+                            <td>{{ aluno.nome }}</td>
+                            <td>{{ aluno.matricula }}</td>
+                            <td>
+                                <a href="{{url_for('alunos.editar', id=aluno.id)}}" class="btn btn-info">Editar</a>
+                                <a href="{{url_for('alunos.excluir', id=aluno.id)}}" class="btn btn-danger">Apagar</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endblock %}
+</body>
+</html>

@@ -1,11 +1,10 @@
 from flask import Flask, render_template, request, flash, redirect, url_for
-from turma import Turma
 import pymysql
 from database import db, lm
 from flask_migrate import Migrate
-from nota import Nota
-from turma import Turma
-from aluno import Aluno
+from models.nota import Nota
+from models.turma import Turma
+from models.aluno import Aluno
 from controllers.aluno import bp_alunos
 
 app = Flask(__name__)
@@ -22,7 +21,7 @@ migrate = Migrate(app, db)
 
 @app.route('/')
 def index():
-    return 'Conexão realizada com sucesso'
+    return redirect(url_for('alunos.listar'))
 
 @app.route('/add', methods=['GET', 'POST']) 
 def add():
