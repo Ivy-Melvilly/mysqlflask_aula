@@ -21,7 +21,12 @@ migrate = Migrate(app, db)
 
 @app.route('/')
 def index():
-    return redirect(url_for('alunos.listar'))
+    return redirect(url_for('alunos.login'))
+
+
+@app.route('/dashboard')
+def dashboard():
+    return render_template('dashboard.html')
 
 @app.route('/add', methods=['GET', 'POST']) 
 def add():

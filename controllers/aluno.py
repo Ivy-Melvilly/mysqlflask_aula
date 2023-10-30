@@ -17,7 +17,8 @@ def autenticar():
     if (aluno and aluno.senha == senha):
         return 'Bem-vindo {}!'.format(aluno.nome)
     else:
-        return 'Usuário não localizado'
+        flash('Dados incorretos', 'danger')
+        return redirect('/')
 
 @bp_alunos.route('/cadastrar', methods=['GET', 'POST'])
 def cadastrar():
