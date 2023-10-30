@@ -23,7 +23,6 @@ migrate = Migrate(app, db)
 def index():
     return redirect(url_for('alunos.login'))
 
-
 @app.route('/dashboard')
 def dashboard():
     return render_template('dashboard.html')
@@ -44,6 +43,10 @@ def add():
 def get():
     notas = Nota.query.all()
     return render_template('nota_get.html', notas=notas)
+
+@app.errorhandler(401)
+def acesso_negado(e):
+    return render_template('acesso_negado.html'), 404
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, flash, redirect, url_for
 from flask import Blueprint
 from models.aluno import Aluno
 from database import db, lm
+from flask_login import login_user, logout_user, login_required
 
 bp_alunos = Blueprint("alunos", __name__, template_folder='templates')
 
@@ -9,13 +10,20 @@ bp_alunos = Blueprint("alunos", __name__, template_folder='templates')
 def login():
     return render_template('login.html')
 
+@bp_alunos.route('/logoff')
+def logoff():
+    logout_user()
+    return redirect('/')
+
 @bp_alunos.route('/autenticar', methods=['POST'])
 def autenticar():
     matricula = request.form.get('matricula')
     senha = request.form.get('senha')
     aluno = Aluno.query.filter_by(matricula=matricula).first()
     if (aluno and aluno.senha == senha):
+        login_user(aluno)
         return 'Bem-vindo {}!'.format(aluno.nome)
+        	
     else:
         flash('Dados incorretos', 'danger')
         return redirect('/')
@@ -40,6 +48,7 @@ def listar():
     return render_template('alunos/alunos_listar.html', alunos=alunos)
         
 @bp_alunos.route('/excluir/<int:id>', methods=['GET', 'POST'])
+@login_required
 def excluir(id):
   aluno = Aluno.query.get(id)
   if request.method == 'GET':
@@ -66,6 +75,6 @@ def editar(id):
 
 @lm.user_loader
 def load_user(id):
-    aluno = Aluno.query.fiter_by(id=id).first()
+    aluno = Aluno.query.filter_by(id=id).first()
     return aluno
 
