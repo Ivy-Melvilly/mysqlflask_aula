@@ -22,8 +22,8 @@ def autenticar():
     aluno = Aluno.query.filter_by(matricula=matricula).first()
     if (aluno and aluno.senha == senha):
         login_user(aluno)
-        return 'Bem-vindo {}!'.format(aluno.nome)
-        	
+        return redirect('listar')
+
     else:
         flash('Dados incorretos', 'danger')
         return redirect('/')

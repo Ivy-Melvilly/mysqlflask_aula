@@ -46,7 +46,8 @@ def get():
 
 @app.errorhandler(401)
 def acesso_negado(e):
-    return render_template('acesso_negado.html'), 404
+    flash('Você não tem permissão de acessar essa página', 'danger')
+    return redirect('/')
 
 if __name__ == '__main__':
     app.run(debug=True)
